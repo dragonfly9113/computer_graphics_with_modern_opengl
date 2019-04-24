@@ -31,7 +31,7 @@ out vec4 colour;									\n\
 													\n\
 void main()											\n\
 {													\n\
-	colour = vec4(1.0, 0.0, 0.0, 1.0);				\n\
+	colour = vec4(0.0, 1.0, 0.0, 1.0);				\n\
 }";
 
 void CreateTriangle()
@@ -77,7 +77,6 @@ void AddShader(GLuint theProgram, const GLchar* shaderCode, GLenum shaderType)
 	if (!result)
 	{
 		glGetShaderInfoLog(theShader, sizeof(eLog), NULL, eLog);
-		//cout << "Error compiling " << shaderType << " shader: " << eLog << endl;
 		printf("Error compiling %d shader: %s\n", shaderType, eLog);
 		return;
 	}
