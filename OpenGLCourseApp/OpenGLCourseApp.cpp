@@ -20,7 +20,7 @@ layout (location = 0) in vec3 pos;					\n\
 													\n\
 void main()											\n\
 {													\n\
-	gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);	\n\
+	gl_Position = vec4(0.4*pos.x, 0.4*pos.y, pos.z, 1.0);	\n\
 }";
 
 // Fragment shader
@@ -73,11 +73,13 @@ void AddShader(GLuint theProgram, const GLchar* shaderCode, GLenum shaderType)
 	GLint result = 0;
 	GLchar eLog[1024]{};
 
-	glGetProgramiv(theShader, GL_COMPILE_STATUS, &result);
+	//glGetProgramiv(theShader, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(theShader, GL_COMPILE_STATUS, &result);
 	if (!result)
 	{
 		glGetShaderInfoLog(theShader, sizeof(eLog), NULL, eLog);
-		cout << "Error compiling " << shaderType << " shader: " << eLog << endl;
+		//cout << "Error compiling " << shaderType << " shader: " << eLog << endl;
+		printf("Error compiling %d shader: %s\n", shaderType, eLog);
 		return;
 	}
 
