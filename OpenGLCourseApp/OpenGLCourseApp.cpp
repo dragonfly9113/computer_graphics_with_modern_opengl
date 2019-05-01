@@ -13,6 +13,7 @@
 using namespace std;
 
 const GLint WIDTH = 800, HEIGHT = 600;
+const float toRadians = 3.14159265f / 180.f;   // can be used to convert a degree number to a radian number
 
 GLuint VAO, VBO, shader, uniformModel;
 
@@ -20,6 +21,8 @@ bool direction = true;
 float triOffset = 0.0f;
 float triMaxoffset = 0.7f;
 float triIncrement = 0.005f;
+
+float curAngle = 0.0f;
 
 // Vertex shader
 static const char* vShader = "						\n\
@@ -201,6 +204,12 @@ int main()
 			direction = !direction;
 		}
 
+		curAngle += 1.f;
+		if (curAngle >= 360)
+		{
+			curAngle -= 360;
+		}
+
 		// clear window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -209,8 +218,9 @@ int main()
 
 		glm::mat4 model = glm::mat4(1.0);
 
-		model = glm::translate(model, glm::vec3(triOffset, triOffset, 0.0f));
-
+		model = glm::translate(model, glm::vec3(triOffset, 0.0f, 0.0f));
+		model = glm::rotate(model, curAngle * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 
 		glBindVertexArray(VAO);
