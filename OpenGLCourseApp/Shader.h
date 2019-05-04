@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include <string>
 
 #include <GL/glew.h>
 

@@ -16,7 +16,12 @@ void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode)
 
 void Shader::CreateFromFiles(const char* vertexLocation, const char* fragmentLocation)
 {
+	std::string vertexString = ReadFile(vertexLocation);
+	std::string fragmentString = ReadFile(fragmentLocation);
+	const char* vertexCode = vertexString.c_str();
+	const char* fragmentCode = fragmentString.c_str();
 
+	CompileShader(vertexCode, fragmentCode);
 }
 
 std::string Shader::ReadFile(const char* fileLocation)
@@ -34,6 +39,9 @@ std::string Shader::ReadFile(const char* fileLocation)
 		std::getline(fileStream, line);
 		content.append(line + "\n");
 	}
+
+	fileStream.close();
+	return content;
 }
 
 void Shader::CompileShader(const char* vertexCode, const char* fragmentCode)
