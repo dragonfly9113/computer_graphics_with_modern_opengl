@@ -13,26 +13,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
+#include "Window.h"
 #include "Mesh.h"
 #include "Shader.h"
 
-// Window dimensions
-const GLint WIDTH = 800, HEIGHT = 600;
-const float toRadians = 3.14159265f / 180.f;   // can be used to convert a degree number to a radian number
-
+Window mainWindow;
 std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
-
-bool direction = true;
-float triOffset = 0.0f;
-float triMaxoffset = 0.7f;
-float triIncrement = 0.0001f;
-
-float curAngle = 0.0f;
-bool sizeDirection = true;
-float currSize = 0.4f;
-float maxSize = 0.8f;
-float minSize = 0.1f;
 
 // Vertex shader
 static const char* vShader = "Shaders/shader.vert";
@@ -74,98 +61,21 @@ void CreateShaders()
 
 int main()
 {
-	// Initialize GLFW
-	if (!glfwInit())
-	{
-		std::cout << "GLFW initialization failed!" << std::endl;
-		glfwTerminate();
-		return 1;
-	}
-
-	// Setup GLFW window properties
-	// OpenGL version
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	// Core profile = No backwards compatibility
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// Allow forward compatibility
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-	GLFWwindow *mainWindow = glfwCreateWindow(WIDTH, HEIGHT, "Test Window", nullptr, nullptr);
-	if (!mainWindow)
-	{
-		std::cout << "GLFW window creation failed!" << std::endl;
-		glfwTerminate();
-		return 1;
-	}
-
-	// Get buffer size info
-	int bufferWidth, bufferHeight;
-	glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
-
-	// Set context for GLEW to use
-	glfwMakeContextCurrent(mainWindow);
-
-	// Allow modern extension features
-	glewExperimental = GL_TRUE;
-
-	if (glewInit() != GLEW_OK)
-	{
-		std::cout << "GLEW initialization failed!" << std::endl;
-		glfwDestroyWindow(mainWindow);
-		glfwTerminate();
-		return 1;
-	}
-
-	glEnable(GL_DEPTH_TEST);
-
-	// Setup Viewport size
-	glViewport(0, 0, bufferWidth, bufferHeight);
+	mainWindow = Window(800, 600);
+	mainWindow.initialise();
 
 	CreateObjects();
 	CreateShaders();
 
 	GLuint uniformProjection = 0, uniformModel = 0;
 
-	glm::mat4 projection = glm::perspective(45.f, (GLfloat)bufferWidth / (GLfloat)bufferHeight, 0.1f, 100.f);
+	glm::mat4 projection = glm::perspective(45.f, mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
 
 	// Loop until window closed
-	while (!glfwWindowShouldClose(mainWindow))
+	while (!mainWindow.getShouldClose())
 	{
 		// Get and handle user input events
 		glfwPollEvents();
-
-		if (direction)
-		{
-			triOffset += triIncrement;
-		}
-		else {
-			triOffset -= triIncrement;
-		}
-
-		if (abs(triOffset) >= triMaxoffset) {
-			direction = !direction;
-		}
-
-		curAngle += 0.01f;
-		if (curAngle >= 360)
-		{
-			curAngle -= 360;
-		}
-
-		if (sizeDirection)
-		{
-			currSize += 0.001f;
-		}
-		else
-		{
-			currSize -= 0.001f;
-		}
-
-		if (currSize >= maxSize || currSize <= minSize)
-		{
-			sizeDirection = !sizeDirection;
-		}
 
 		// clear window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -176,21 +86,21 @@ int main()
 		uniformProjection = shaderList[0].GetProjectionLocation();
 
 		glm::mat4 model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(triOffset, 0.f, -2.5f));
+		model = glm::translate(model, glm::vec3(0.f, 0.f, -2.5f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
 		meshList[0]->RenderMesh();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-triOffset, 1.f, -2.5f));
+		model = glm::translate(model, glm::vec3(0.f, 1.f, -2.5f));
 		model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		meshList[1]->RenderMesh();
 
 		glUseProgram(0);
 
-		glfwSwapBuffers(mainWindow);
+		mainWindow.swapBuffers();
 	}
 
 	return 0;
