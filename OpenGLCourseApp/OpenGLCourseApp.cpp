@@ -26,7 +26,7 @@ std::vector<Shader> shaderList;
 bool direction = true;
 float triOffset = 0.0f;
 float triMaxoffset = 0.7f;
-float triIncrement = 0.01f;
+float triIncrement = 0.0001f;
 
 float curAngle = 0.0f;
 bool sizeDirection = true;
