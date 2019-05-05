@@ -35,10 +35,10 @@ float maxSize = 0.8f;
 float minSize = 0.1f;
 
 // Vertex shader
-static const char* vShader = "Shader/shader.vert";
+static const char* vShader = "Shaders/shader.vert";
 
 // Fragment shader
-static const char* fShader = "Shader/shader.frag";
+static const char* fShader = "Shaders/shader.frag";
 
 void CreateObjects()
 {
@@ -68,7 +68,7 @@ void CreateObjects()
 void CreateShaders()
 {
 	Shader* shader1 = new Shader();
-	shader1->CreateFromString(vShader, fShader);
+	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
 }
 
