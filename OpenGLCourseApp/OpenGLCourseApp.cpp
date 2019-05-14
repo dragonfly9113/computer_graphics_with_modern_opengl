@@ -40,6 +40,41 @@ static const char* vShader = "Shaders/shader.vert";
 // Fragment shader
 static const char* fShader = "Shaders/shader.frag";
 
+// A helper function to calculate normal average
+void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, unsigned int* vertices, unsigned int verticeCount,
+						unsigned int vLength, unsigned int normalOffset)
+{
+	// for each triangle
+	for (size_t i = 0; i < indiceCount; i += 3)
+	{
+		unsigned int in0 = indices[i] * vLength;
+		unsigned int in1 = indices[i + 1] * vLength;
+		unsigned int in2 = indices[i + 2] * vLength;
+		// the edge connecting indices[i] and indices[i + 1]
+		glm::vec3 v1(vertices[in1] - vertices[in0], vertices[in1 + 1] - vertices[in0 + 1], vertices[in1 + 2] - vertices[in0 + 2]);
+		// the edge connecting indices[i] and indices[i + 2]
+		glm::vec3 v2(vertices[in2] - vertices[in0], vertices[in2 + 1] - vertices[in0 + 1], vertices[in2 + 2] - vertices[in0 + 2]);
+		// now calculate the normal based on the two edges above
+		glm::vec3 normal = glm::cross(v1, v2);
+		normal = glm::normalize(normal);
+
+		// now need to save the normal value above to a proper vertex location
+		in0 += normalOffset; in1 += normalOffset; in2 += normalOffset;
+		vertices[in0] += normal.x; vertices[in0 + 1] += normal.y; vertices[in0 + 2] += normal.z;
+		vertices[in1] += normal.x; vertices[in1 + 1] += normal.y; vertices[in1 + 2] += normal.z;
+		vertices[in2] += normal.x; vertices[in2 + 1] += normal.y; vertices[in2 + 2] += normal.z;
+	}
+
+	for (size_t i = 0; i < verticeCount / vLength; i++)
+	{
+		unsigned int nOffset = i * vLength + normalOffset;
+		glm::vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);
+		vec = glm::normalize(vec);
+		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
+	}
+
+}
+
 void CreateObjects()
 {
 	unsigned int indices[] = {
@@ -50,11 +85,11 @@ void CreateObjects()
 	};
 
 	GLfloat vertices[] = {
-		// x   y      z    u     v
-		-1.0f, -1.0f, 0.f, 0.0f, 0.0f,
-		0.0f, -1.0f, 1.0f, 0.5f, 0.0f,
-		1.0f, -1.0f, 0.f,  1.0f, 0.0f,
-		0.f, 1.0f, 0.f,    0.5f, 1.0f
+		// x   y      z		u     v			nx	  ny    nz
+		-1.0f, -1.0f, 0.f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 1.0f,	0.5f, 0.0f,		0.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, 0.f,	1.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+		0.f, 1.0f, 0.f,		0.5f, 1.0f,		0.0f, 0.0f, 0.0f
 	};
 
 	Mesh* obj1 = new Mesh();
