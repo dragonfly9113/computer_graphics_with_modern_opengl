@@ -16,6 +16,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Light.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Texture.h"
@@ -27,6 +28,8 @@ Camera camera;
 
 Texture brickTexture;
 Texture dirtTexture;
+
+Light mainLight;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
@@ -85,7 +88,9 @@ int main()
 	dirtTexture = Texture("Textures/dirt.png");
 	dirtTexture.LoadTexture();
 	
-	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0;
+	mainLight = Light(1.0f, 1.0f, 1.0f, 1.0f);
+
+	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformAmbientIntensity, uniformAmbientColour;
 	glm::mat4 projection = glm::perspective(45.f, mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 100.f);
 
 	// Loop until window closed
@@ -109,6 +114,10 @@ int main()
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
 		uniformView = shaderList[0].GetViewLocation();
+		uniformAmbientIntensity = shaderList[0].GetAmbientIntensityLocation();
+		uniformAmbientColour = shaderList[0].GetAmbientColourLocation();
+
+		mainLight.UseLight(uniformAmbientIntensity, uniformAmbientColour);
 
 		glm::mat4 model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.f, 0.f, -2.5f));
