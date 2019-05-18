@@ -14,10 +14,10 @@
 
 #include "Window.h"
 #include "Mesh.h"
-#include "Shader.h"
 #include "Camera.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "Shader.h"
 #include "Material.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -30,6 +30,7 @@ Camera camera;
 
 Texture brickTexture;
 Texture dirtTexture;
+Texture plainTexture;
 
 Material shinyMaterial;
 Material dullMaterial;
@@ -145,6 +146,8 @@ int main()
 	brickTexture.LoadTexture();
 	dirtTexture = Texture("Textures/dirt.png");
 	dirtTexture.LoadTexture();
+	plainTexture = Texture("Textures/plain.png");
+	plainTexture.LoadTexture();
 	
 	shinyMaterial = Material(4.0f, 256);
 	dullMaterial = Material(0.3f, 4);
@@ -157,7 +160,7 @@ int main()
 
 	pointLights[0] = PointLight(0.0f, 0.0f, 1.0f,
 								0.0f, 1.0f,
-								4.0f, 0.0f, 0.0f,
+								0.0f, 0.0f, 0.0f,
 								0.3f, 0.2f, 0.1f);
 	pointLightCount++;
 	pointLights[1] = PointLight(0.0f, 1.0f, 0.0f,
@@ -224,7 +227,7 @@ int main()
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		dirtTexture.UseTexture();
+		plainTexture.UseTexture();
 		shinyMaterial.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		meshList[2]->RenderMesh();
 
