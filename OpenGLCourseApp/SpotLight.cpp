@@ -37,7 +37,7 @@ void SpotLight::UseLight(GLuint ambientIntensityLocation, GLuint ambientColourLo
 	glUniform1f(exponentLocation, exponent);
 
 	glUniform3f(directionLocation, direction.x, direction.y, direction.z);
-	glUniform1f(edgeLocation, edge);
+	glUniform1f(edgeLocation, procEdge);
 }
 
 SpotLight::~SpotLight()

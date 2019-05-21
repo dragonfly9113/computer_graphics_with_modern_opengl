@@ -95,6 +95,7 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode)
 	uniformEyePostion = glGetUniformLocation(shaderID, "eyePosition");
 
 	uniformPointLightCount = glGetUniformLocation(shaderID, "pointLightCount");
+	uniformSpotLightCount = glGetUniformLocation(shaderID, "spotLightCount");
 
 	for (size_t i = 0; i < MAX_POINT_LIGHTS; i++)
 	{

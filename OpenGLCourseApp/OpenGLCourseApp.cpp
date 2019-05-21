@@ -136,7 +136,7 @@ void CreateShaders()
 
 int main()
 {
-	mainWindow = Window(1366, 768);
+	mainWindow = Window(1920, 1080);
 	mainWindow.initialise();
 
 	CreateObjects();
@@ -155,7 +155,7 @@ int main()
 	dullMaterial = Material(0.3f, 4);
 
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-								0.0f, 0.0f,
+								0.1f, 0.3f,
 								0.0f, 0.0f, -1.0f);
 
 	unsigned int pointLightCount = 0;
