@@ -146,4 +146,5 @@ void Model::ClearModel()
 
 Model::~Model()
 {
+	ClearModel();
 }
