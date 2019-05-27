@@ -40,7 +40,26 @@ bool ShadowMap::Init(GLuint width, GLuint height)
 	return true;
 }
 
+void ShadowMap::Write()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+}
+
+void ShadowMap::Read(GLenum textureUnit)
+{
+	glActiveTexture(textureUnit);
+	glBindTexture(GL_TEXTURE_2D, shadowMap);
+}
 
 ShadowMap::~ShadowMap()
 {
+	if (FBO)
+	{
+		glDeleteFramebuffers(1, &FBO);
+	}
+
+	if (shadowMap)
+	{
+		glDeleteTextures(1, &shadowMap);
+	}
 }
