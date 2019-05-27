@@ -24,7 +24,20 @@ bool ShadowMap::Init(GLuint width, GLuint height)
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
 
-	return false;
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+	if (status != GL_FRAMEBUFFER_COMPLETE)
+	{
+		printf("Framebuffer Error: %i\n", status);
+		return false;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	return true;
 }
 
 
