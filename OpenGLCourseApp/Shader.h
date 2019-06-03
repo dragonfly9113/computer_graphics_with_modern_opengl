@@ -6,6 +6,8 @@
 #include <string>
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "CommonValues.h"
 
@@ -52,6 +54,7 @@ private:
 
 	GLuint shaderID, uniformProjection, uniformModel, uniformView, uniformEyePostion,
 		uniformSpecularIntensity, uniformShininess,
+		uniformTexture,
 		uniformDirectionalLightTransform, uniformDirectionalShadowMap;
 
 	struct {
