@@ -170,6 +170,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="OmniShadowMap.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shader.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="OmniShadowMap.cpp" />
     <ClCompile Include="OpenGLCourseApp.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
