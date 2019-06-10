@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "OmniShadowMap.h"
 
-
 OmniShadowMap::OmniShadowMap() : ShadowMap() {}
 
 bool OmniShadowMap::Init(GLuint width, GLuint height)
@@ -51,7 +50,7 @@ void OmniShadowMap::Write()
 void OmniShadowMap::Read(GLenum textureUnit)
 {
 	glActiveTexture(textureUnit);
-	glBindTexture(GL_TEXTURE_2D, shadowMap);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, shadowMap);
 }
 
 OmniShadowMap::~OmniShadowMap() {}
