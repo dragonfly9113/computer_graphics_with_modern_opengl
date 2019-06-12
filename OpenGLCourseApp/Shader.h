@@ -24,6 +24,8 @@ public:
 	void CreateFromFiles(const char* vertexLocation, const char* fragmentLocation);
 	void CreateFromFiles(const char* vertexLocation, const char* geometryLocation, const char* fragmentLocation);
 
+	void Validate();
+
 	std::string ReadFile(const char* fileLocation);
 
 	GLuint GetProjectionLocation();

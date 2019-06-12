@@ -92,6 +92,21 @@ void Shader::CompileShader(const char* vertexCode, const char* geometryCode, con
 	CompileProgram();
 }
 
+void Shader::Validate()
+{
+	GLint result = 0;
+	GLchar eLog[1024]{};
+
+	glValidateProgram(shaderID);
+	glGetProgramiv(shaderID, GL_VALIDATE_STATUS, &result);
+	if (!result)
+	{
+		glGetProgramInfoLog(shaderID, sizeof(eLog), NULL, eLog);
+		std::cout << "Error validating program: " << eLog << std::endl;
+		return;
+	}
+}
+
 void Shader::CompileProgram()
 {
 	GLint result = 0;
@@ -103,15 +118,6 @@ void Shader::CompileProgram()
 	{
 		glGetProgramInfoLog(shaderID, sizeof(eLog), NULL, eLog);
 		std::cout << "Error linking program: " << eLog << std::endl;
-		return;
-	}
-
-	glValidateProgram(shaderID);
-	glGetProgramiv(shaderID, GL_VALIDATE_STATUS, &result);
-	if (!result)
-	{
-		glGetProgramInfoLog(shaderID, sizeof(eLog), NULL, eLog);
-		std::cout << "Error validating program: " << eLog << std::endl;
 		return;
 	}
 
