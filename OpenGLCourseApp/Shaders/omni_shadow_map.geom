@@ -11,7 +11,7 @@ void main()
 {
 	for (int face = 0; face < 6; face++)
 	{
-		gl_layer = face;
+		gl_Layer = face;
 		for ( int i = 0; i < 3; i++)
 		{
 			FragPos = gl_in[i].gl_Position;
