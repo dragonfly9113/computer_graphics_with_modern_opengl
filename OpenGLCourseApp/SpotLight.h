@@ -22,6 +22,8 @@ public:
 	
 	void SetFlash(glm::vec3 pos, glm::vec3 dir);
 
+	void Toggle() { isOn = !isOn; }
+
 	~SpotLight();
 
 private:
@@ -29,5 +31,6 @@ private:
 
 	GLfloat edge, procEdge;
 
+	bool isOn;
 };
 
